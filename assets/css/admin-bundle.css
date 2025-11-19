@@ -1,0 +1,69 @@
+/**
+ * Estilos Admin para Bundle Builder
+ */
+
+/* Panel de Bundle Builder */
+#bundle_builder_product_data {
+    padding: 20px;
+}
+
+#bundle_builder_product_data .options_group {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#bundle_builder_product_data .options_group:last-child {
+    border-bottom: none;
+}
+
+/* Color Picker */
+.wcbb-color-picker {
+    max-width: 100px;
+}
+
+/* Select2 personalizado para productos */
+#_bundle_allowed_products {
+    min-height: 150px;
+}
+
+/* Mensajes de ayuda */
+.wcbb-help-tip {
+    color: #666;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+}
+
+/* Columnas en la lista de productos */
+.column-bundle_info {
+    width: 150px;
+}
+
+.column-bundle_info strong {
+    display: inline-block;
+    min-width: 70px;
+}
+
+/* Badge del bundle en el carrito */
+.wcbb-bundle-badge {
+    display: inline-block;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estilos para meta data en órdenes */
+.wc-order-item-bundle-products {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+    padding-left: 10px;
+    border-left: 3px solid #3498db;
+}

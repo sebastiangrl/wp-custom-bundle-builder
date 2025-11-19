@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Node (si usas compiladores)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Composer (si usas dependencias PHP)
+/vendor/
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
+*~
