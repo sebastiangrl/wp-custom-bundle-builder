@@ -60,26 +60,25 @@ class WCBB_Bundle_Ajax_Handler {
             ) );
         }
 
-        // Validar cantidad máxima
-        $max_quantity = get_post_meta( $bundle_id, '_bundle_max_quantity', true ) ?: 4;
+        // Validar cantidad mínima
+        $min_quantity = get_post_meta( $bundle_id, '_bundle_max_quantity', true ) ?: 4;
         $total_quantity = 0;
-        
         foreach ( $selected_products as $product_id => $quantity ) {
             $total_quantity += absint( $quantity );
         }
 
-        if ( $total_quantity > $max_quantity ) {
+        if ( $total_quantity < $min_quantity ) {
             wp_send_json_error( array(
-                'message' => sprintf( 
-                    __( 'Has superado el límite máximo de %d productos', 'wp-custom-bundle-builder' ),
-                    $max_quantity 
+                'message' => sprintf(
+                    __( 'You must select at least %d products', 'wp-custom-bundle-builder' ),
+                    $min_quantity
                 ),
             ) );
         }
 
         if ( $total_quantity === 0 ) {
             wp_send_json_error( array(
-                'message' => __( 'Debes seleccionar al menos 1 producto', 'wp-custom-bundle-builder' ),
+                'message' => __( 'Please select at least one product', 'wp-custom-bundle-builder' ),
             ) );
         }
 
@@ -160,7 +159,7 @@ class WCBB_Bundle_Ajax_Handler {
 
         if ( $cart_item_key ) {
             wp_send_json_success( array(
-                'message' => __( 'Bundle añadido al carrito correctamente', 'wp-custom-bundle-builder' ),
+                'message' => __( 'Bundle added to cart successfully', 'wp-custom-bundle-builder' ),
                 'cart_url' => wc_get_cart_url(),
                 'cart_hash' => WC()->cart->get_cart_hash(),
             ) );

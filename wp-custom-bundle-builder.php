@@ -127,7 +127,7 @@ function wcbb_enqueue_scripts() {
                     'add_incomplete'     => __( 'Añadir Bundle Incompleto', 'wp-custom-bundle-builder' ),
                     'select_products'    => __( 'Por favor, selecciona al menos un producto.', 'wp-custom-bundle-builder' ),
                     'select_products_btn'=> __( 'Selecciona Productos', 'wp-custom-bundle-builder' ),
-                    'added_to_cart'      => __( '✓ Bundle añadido al carrito correctamente', 'wp-custom-bundle-builder' ),
+                    'added_to_cart'      => __( '✓ Bundle added to cart successfully', 'wp-custom-bundle-builder' ),
                     'adding_incomplete'  => __( 'Añadiendo bundle con %d productos...', 'wp-custom-bundle-builder' ),
                     'error'              => __( 'Error al añadir el bundle al carrito', 'wp-custom-bundle-builder' ),
                 )

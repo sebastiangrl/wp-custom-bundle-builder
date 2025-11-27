@@ -10,7 +10,7 @@
         constructor(container) {
             this.container = container;
             this.bundleId = container.dataset.bundleId;
-            this.maxQuantity = parseInt(container.dataset.maxQuantity) || 4;
+            this.minQuantity = parseInt(container.dataset.minQuantity) || 4; // now treated as minimum
             this.allowIncomplete = container.dataset.allowIncomplete === 'yes';
             this.designStyle = container.dataset.designStyle || 'minimal';
             this.selectedProducts = {};
@@ -71,11 +71,7 @@
         }
 
         increaseQuantity(productId) {
-            // Verificar si hay espacio disponible
-            if (this.totalCount >= this.maxQuantity) {
-                this.showMessage(wcbbData.i18n.bundle_complete || 'Bundle complete! You cannot add more products.', 'warning');
-                return;
-            }
+            // No hay límite máximo, solo stock
 
             // Obtener datos del producto
             const $productItem = this.$container.find(`.wcbb-product-item[data-product-id="${productId}"]`);
@@ -189,6 +185,7 @@
             
             const $input = this.$container.find(`.wcbb-quantity-input[data-product-id="${productId}"]`);
             const $decreaseBtn = this.$container.find(`.wcbb-decrease-qty[data-product-id="${productId}"]`);
+            // No need to disable increase button anymore
             const $increaseBtn = this.$container.find(`.wcbb-increase-qty[data-product-id="${productId}"]`);
 
             // Actualizar input
@@ -201,12 +198,8 @@
                 $decreaseBtn.prop('disabled', true).addClass('disabled');
             }
 
-            // Habilitar/deshabilitar botón aumentar
-            if (this.totalCount >= this.maxQuantity) {
-                $increaseBtn.prop('disabled', true).addClass('disabled');
-            } else {
-                $increaseBtn.prop('disabled', false).removeClass('disabled');
-            }
+            // Botón aumentar siempre habilitado (salvo stock, que se controla aparte)
+            $increaseBtn.prop('disabled', false).removeClass('disabled');
         }
 
         updateSelectedProducts() {
@@ -272,8 +265,8 @@
             // Actualizar precio total
             this.$priceAmount.html(this.formatPrice(this.totalPrice));
 
-            // Lógica del botón añadir al carrito - SOLO habilitar si está completo
-            if (this.totalCount === this.maxQuantity) {
+            // Lógica del botón añadir al carrito - habilitar si cumple el mínimo
+            if (this.totalCount >= this.minQuantity) {
                 this.$addToCartBtn.prop('disabled', false).removeClass('disabled');
                 this.$addToCartBtn.text('Add to Cart');
             } else {
@@ -281,23 +274,9 @@
                 if (this.totalCount === 0) {
                     this.$addToCartBtn.text('Add to Cart');
                 } else {
-                    const remaining = this.maxQuantity - this.totalCount;
+                    const remaining = this.minQuantity - this.totalCount;
                     this.$addToCartBtn.text(`Select ${remaining} more`);
                 }
-            }
-
-            // Actualizar todos los botones de aumentar
-            if (this.totalCount >= this.maxQuantity) {
-                this.$increaseButtons.prop('disabled', true).addClass('disabled');
-            } else {
-                this.$increaseButtons.each((index, btn) => {
-                    const productId = $(btn).data('product-id');
-                    const currentQty = this.selectedProducts[productId] ? this.selectedProducts[productId].quantity : 0;
-                    
-                    if (currentQty === 0 || this.totalCount < this.maxQuantity) {
-                        $(btn).prop('disabled', false).removeClass('disabled');
-                    }
-                });
             }
         }
 
@@ -337,22 +316,12 @@
                 return;
             }
 
-            // SIEMPRE verificar que el bundle esté completo (debe tener exactamente maxQuantity)
-            if (this.totalCount < this.maxQuantity) {
-                const remaining = this.maxQuantity - this.totalCount;
+            // Verificar que el bundle cumpla el mínimo
+            if (this.totalCount < this.minQuantity) {
+                const remaining = this.minQuantity - this.totalCount;
                 this.showMessage(
                     wcbbData.i18n.bundle_incomplete.replace('%d', remaining) || 
-                    `You need to select exactly ${this.maxQuantity} products. Please add ${remaining} more product(s).`,
-                    'warning'
-                );
-                return;
-            }
-
-            // No permitir más productos de los permitidos
-            if (this.totalCount > this.maxQuantity) {
-                const excess = this.totalCount - this.maxQuantity;
-                this.showMessage(
-                    `You have ${excess} too many product(s). Please remove some products.`,
+                    `You need to select at least ${this.minQuantity} products. Please add ${remaining} more product(s).`,
                     'warning'
                 );
                 return;
@@ -428,8 +397,12 @@
     // Inicializar cuando el documento esté listo
     $(document).ready(function() {
         const bundleContainer = document.querySelector('.wcbb-bundle-builder-wrapper');
-        
         if (bundleContainer) {
+            // Para compatibilidad, pasar minQuantity en vez de maxQuantity
+            // Si el atributo data-min-quantity no existe, usar data-max-quantity
+            if (!bundleContainer.dataset.minQuantity && bundleContainer.dataset.maxQuantity) {
+                bundleContainer.dataset.minQuantity = bundleContainer.dataset.maxQuantity;
+            }
             new BundleBuilder(bundleContainer);
         }
     });

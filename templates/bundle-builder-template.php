@@ -162,10 +162,10 @@ if ( empty( $allowed_products ) ) {
 ?>
 
 <div class="wcbb-bundle-builder-wrapper" 
-     data-bundle-id="<?php echo esc_attr( $product->get_id() ); ?>" 
-     data-max-quantity="<?php echo esc_attr( $max_quantity ); ?>"
-     data-allow-incomplete="<?php echo esc_attr( $allow_incomplete ); ?>"
-     data-design-style="<?php echo esc_attr( $design_style ); ?>">
+    data-bundle-id="<?php echo esc_attr( $product->get_id() ); ?>" 
+    data-min-quantity="<?php echo esc_attr( $max_quantity ); ?>"
+    data-allow-incomplete="<?php echo esc_attr( $allow_incomplete ); ?>"
+    data-design-style="<?php echo esc_attr( $design_style ); ?>">
     
     <style>
         /* Ocultar galería de imágenes y precio de WooCommerce */
@@ -191,7 +191,7 @@ if ( empty( $allowed_products ) ) {
         <!-- Columna Izquierda: Productos Disponibles -->
         <div class="wcbb-products-list">
             <h3>
-                <?php echo esc_html( sprintf( 'Select %d Flavors', $max_quantity ) ); ?>
+                <?php echo esc_html( sprintf( 'Select at least %d Flavors', $max_quantity ) ); ?>
                 <span style="font-size: 14px; font-weight: 400; color: #666; margin-left: 8px;">
                     <?php esc_html_e( '· Available Products', 'wp-custom-bundle-builder' ); ?>
                 </span>
@@ -290,7 +290,6 @@ if ( empty( $allowed_products ) ) {
                                 class="wcbb-quantity-input" 
                                 value="0" 
                                 min="0" 
-                                max="<?php echo esc_attr( $max_quantity ); ?>" 
                                 readonly
                                 data-product-id="<?php echo esc_attr( $product_data['id'] ); ?>"
                             >
@@ -306,12 +305,12 @@ if ( empty( $allowed_products ) ) {
         </div>
 
         <!-- Columna Derecha: Bundle Visual con Grid de Imágenes -->
-        <div class="wcbb-bundle-visual" data-max-quantity="<?php echo esc_attr( $max_quantity ); ?>">
+        <div class="wcbb-bundle-visual" data-min-quantity="<?php echo esc_attr( $max_quantity ); ?>">
             <div class="wcbb-bundle-header">
                 <h3>
                     <?php esc_html_e( 'Your Bundle', 'wp-custom-bundle-builder' ); ?>
                     <span class="wcbb-counter">
-                        <span class="wcbb-current-count">0</span>/<span class="wcbb-max-count"><?php echo esc_html( $max_quantity ); ?></span>
+                        <span class="wcbb-current-count">0</span> (min <?php echo esc_html( $max_quantity ); ?>)
                     </span>
                 </h3>
             </div>
